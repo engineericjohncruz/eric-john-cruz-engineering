@@ -1,0 +1,80 @@
+{
+  "name": "Eric John Cruz",
+  "credential": "Registered Electrical Engineer, Philippines",
+  "headline": "Estimating, documentation and technical support.",
+  "location": "Puerto Princesa City, Palawan, Philippines",
+  "email": "cruzericjohn@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/eric-john-cruz-ree/",
+  "marketing_portfolio": "https://ericcruzdigital.github.io/",
+  "education": "Bachelor of Science in Electrical Engineering",
+  "university": "Palawan State University",
+  "education_dates": "2018 - 2023",
+  "experience": [
+    {
+      "id": "freelance",
+      "title": "Freelance Electrical Engineer",
+      "company": "Independent projects",
+      "dates": "June 2024 - Present",
+      "type": "Engineering",
+      "bullets": [
+        "Prepare electrical layouts, single-line diagrams, load and panel schedules, material lists and BOQs for small residential and building projects.",
+        "Review drawings and scope notes, organize quantity takeoffs, and document assumptions and revisions for project review.",
+        "Coordinate technical documentation and drawing updates with clients, contractors, inspectors and field personnel."
+      ]
+    },
+    {
+      "id": "rapid",
+      "title": "Technical Encoder",
+      "company": "Rapid Care Manpower Services | Power plant assignment",
+      "dates": "March 2025 - June 2025",
+      "type": "Engineering documentation",
+      "bullets": [
+        "Maintained electrical and automation records, including equipment lists, cable and panel schedules, manuals, work orders and test documentation.",
+        "Cross-checked single-line diagrams, wiring references and technical records for missing or inconsistent information.",
+        "Coordinated with site engineers to track revisions and documentation gaps for engineering review."
+      ]
+    },
+    {
+      "id": "kalayaan",
+      "title": "Trainee Engineer",
+      "company": "Office of the Municipal Engineer of Kalayaan",
+      "dates": "June 2022 - August 2022",
+      "type": "Supervised training",
+      "bullets": [
+        "Assisted with inspection records for municipal electrical facilities, street lighting and small building works.",
+        "Supported AutoCAD drafting, basic cost estimates, BOQs and inspection reports under engineering supervision."
+      ]
+    },
+    {
+      "id": "remote",
+      "title": "Digital Marketing and Remote Operations",
+      "company": "Freelance | SEO Leads and JDS1 Marketing engagements",
+      "dates": "February 2023 - Present",
+      "type": "Remote business experience",
+      "bullets": [
+        "Support SEO Leads as a current agency engagement; previously supported JDS1 Marketing. Agency work is separate from electrical engineering services.",
+        "Prepare analytical reports, research, content and client updates; coordinate reviews, follow-up tasks and quality checks across remote teams.",
+        "Work with Google Workspace, Excel, Basecamp, website publishing and CRM workflows to organize deliverables and track progress."
+      ]
+    },
+    {
+      "id": "foundever",
+      "title": "Subject Matter Expert and Customer Support",
+      "company": "Foundever",
+      "dates": "August 2020 - March 2023",
+      "type": "Customer support",
+      "bullets": [
+        "Progressed to Subject Matter Expert in April 2021, supporting escalations, colleague coaching and quality monitoring.",
+        "Prepared performance reports and process guidance, building practical troubleshooting, documentation and customer communication skills."
+      ]
+    }
+  ],
+  "tools": [
+    {"name": "AutoCAD 2D", "context": "Electrical drafting and drawing revisions"},
+    {"name": "Excel and Google Sheets", "context": "Takeoffs, schedules and reporting"},
+    {"name": "Bluebeam Revu", "context": "PDF drawing review and markups"},
+    {"name": "GroundPlan", "context": "Electrical estimating training and practice"},
+    {"name": "Google Workspace and Microsoft Office", "context": "Technical documents and remote collaboration"},
+    {"name": "Basecamp and GoHighLevel", "context": "Business task tracking and CRM workflows"}
+  ]
+}

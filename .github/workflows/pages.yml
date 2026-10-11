@@ -1,0 +1,80 @@
+name: Build verify and deploy engineering portfolio
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: engineering-pages-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Install build and QA dependencies
+        run: |
+          python -m pip install -r requirements.txt
+          npm install --no-save --package-lock=false playwright axe-core
+          npx playwright install --with-deps chromium
+          sudo apt-get update
+          sudo apt-get install -y libreoffice-writer poppler-utils
+      - name: Build production package
+        env:
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
+        run: python scripts/build.py --base-url "$BASE_URL"
+      - name: Validate content documents and arithmetic
+        run: python scripts/check.py
+      - name: Render Word documents for inspection
+        run: |
+          mkdir -p qa/word-renders
+          libreoffice -env:UserInstallation=file:///tmp/engineering-lo --headless --convert-to pdf --outdir qa/word-renders dist/downloads/*.docx
+          for file in qa/word-renders/*.pdf; do pdftoppm -scale-to 1500 -png "$file" "${file%.pdf}"; done
+          python scripts/check-word.py
+      - name: Responsive interaction accessibility and download checks
+        run: |
+          python -m http.server 8080 --directory dist > qa/server.log 2>&1 &
+          node scripts/browser-check.cjs http://127.0.0.1:8080/
+      - name: Save QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: engineering-qa
+          path: qa
+      - uses: actions/upload-pages-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          path: dist
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check live website and downloads
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python scripts/live-check.py "$PAGE_URL"
