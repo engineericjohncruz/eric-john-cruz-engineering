@@ -78,3 +78,13 @@ jobs:
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: python scripts/live-check.py "$PAGE_URL"
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Verify published portrait on desktop tablet and mobile
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          npm install --no-save --package-lock=false playwright
+          npx playwright install --with-deps chromium
+          node scripts/photo-check.cjs "$PAGE_URL" --emit-previews

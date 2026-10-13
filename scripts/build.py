@@ -143,8 +143,12 @@ PATHWAYS = [
  ('operations','03','Engineering operations and remote support','Document control, project follow-up, reporting and practical coordination across technical and business teams.')
 ]
 
+def portrait(priority=False):
+    return '<img class="professional-portrait" src="assets/eric-john-cruz.webp" width="232" height="232" alt="Eric John Cruz, Registered Electrical Engineer." decoding="async"'+(' fetchpriority="high"' if priority else ' loading="lazy"')+'>'
+
 def render_site():
     home=f'''<section class="hero"><div><span class="eyebrow">Eric John Cruz, REE · Philippines</span><h1>Estimating, documentation and technical support.</h1><p class="intro">I bring an electrical engineering foundation, practical documentation experience and remote business coordination to work that needs clear technical information and reliable follow-through.</p><div class="actions">{btn('Explore work samples','projects.html')}{btn('Choose a résumé','resumes.html',True)}</div><p class="location">Based in Puerto Princesa City · Open to engineering and technical support opportunities</p></div><figure class="hero-figure"><div class="label">Inside the portfolio / Quantity takeoff</div>{plan_svg(True)}<figcaption><span>Original demonstration<br>Count, reconcile, clarify.</span><a href="case-takeoff.html">See the method ↗</a></figcaption></figure></section><div class="credentials"><div><small>Professional qualification</small>Registered Electrical Engineer, Philippines</div><div><small>Engineering education</small>BS Electrical Engineering · Palawan State University</div><div><small>Professional background</small>Engineering documentation + remote operations</div></div>'''
+    home=home.replace('<h1>', '<div class="hero-identity">'+portrait(True)+'<div><strong>Registered Electrical Engineer</strong><p>Electrical Engineering | Technical Sales | Engineering Support</p></div></div><h1>',1)
     home+='<section class="section"><div class="section-head"><h2>Where I can contribute</h2><p>One engineering foundation, with focused support for project teams, suppliers and international employers.</p></div><div class="grid">'
     for slug,num,title,desc in PATHWAYS:home+=f'<article class="card"><span class="number">{num}</span><h3>{title}</h3><p>{desc}</p><a class="text-link" href="{slug}.html">Explore this capability</a></article>'
     home+='</div></section><section class="section"><div class="section-head"><div><span class="eyebrow">Selected work</span><h2>See the work behind the words.</h2></div><p>Original, labelled examples with visible inputs, deliverables and checks. Open a case to inspect the details.</p></div><div class="grid two">'+''.join(project_card(c) for c in CASES)+'</div></section>'
@@ -153,6 +157,7 @@ def render_site():
     page('index.html','Electrical Engineering and Technical Support','Eric John Cruz, Philippine Registered Electrical Engineer. Estimating, engineering documentation, technical sales support and remote operations.',home)
 
     exp=pagehead('Experience','Engineering knowledge. Experience across teams.','My work combines electrical documentation and project support with the communication and delivery habits developed in customer service and remote operations.')
+    exp='<div class="experience-intro">'+exp+'<figure class="experience-portrait">'+portrait()+'<figcaption>Eric John Cruz, REE</figcaption></figure></div>'
     exp+='<section><h2>Engineering experience</h2><div class="timeline">'
     def job(e):return f'<article class="job"><div class="date">{esc(e["dates"])}<br>{esc(e["type"])}</div><div><h3>{esc(e["title"])}</h3><p class="company">{esc(e["company"])}</p>{ul(e["bullets"])}</div></article>'
     exp+=''.join(job(e) for e in PROFILE['experience'][:3])+'</div></section><section class="section"><h2>Remote business and customer support</h2><p class="intro">Transferable experience in communication, reporting, quality review and coordination.</p>'+''.join(job(e) for e in PROFILE['experience'][3:])+'</section>'
