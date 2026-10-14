@@ -34,7 +34,7 @@ for f in OUT.glob('*.html'):
     if parser.h1!=1:errors.append(f'{f.name}: expected one h1, found {parser.h1}')
     if not(parser.title and parser.description and parser.lang):errors.append(f'{f.name}: metadata missing')
     errors += [f'{f.name}: {e}' for e in parser.errors]
-    for forbidden in ['+63 938','libfile_','file_0000','1dzqw_U','salary','commissioned for','100% compliant']:
+    for forbidden in ['+63 938','libfile_','file_0000','1dzqw_U','salary','commissioned for','100% compliant','Kreeayt','fictional']:
         if forbidden in text:errors.append(f'{f.name}: forbidden/private content {forbidden}')
 for f,parser in pages.items():
     for link in parser.links:
@@ -70,6 +70,23 @@ assert sum(not record_ready(r) for r in DEMO['records'])==3
 assert not record_ready(dict(DEMO['records'][0],attachment=False))
 assert not record_ready(dict(DEMO['records'][0],review='Pending'))
 assert not record_ready(dict(DEMO['records'][0],received='B'))
+
+# Keep standalone sample downloads transparent and reconcile them with the site inputs.
+expected_inputs={'takeoff':{'points':DEMO['points'],'route':DEMO['route']},'schedule-review':{'voltage_v':230,'loads':DEMO['loads']},'equipment-evaluation':DEMO['supply'],'document-control':DEMO['records']}
+for slug,inputs in expected_inputs.items():
+    sample=json.loads((OUT/'samples'/(slug+'.json')).read_text(encoding='utf-8'))
+    assert sample['inputs']==inputs,'Sample download differs from the worksheet inputs'
+    assert sample['classification'].startswith('Sample ')
+    assert 'AI assistance' in sample['provenance'] and sample['input_basis'] and sample['limitations']
+    for prefix in ['case-','sample-']:
+        html=(OUT/(prefix+slug+'.html')).read_text(encoding='utf-8')
+        assert 'projects.html#sample-basis' in html,'Sample provenance must remain accessible'
+        assert 'Assumptions and limits' in html
+assert 'VA and current describe connected load' in (OUT/'case-schedule-review.html').read_text(encoding='utf-8')
+assert 'Required C / received B' in (OUT/'case-document-control.html').read_text(encoding='utf-8')
+assert 'SVG coordinates locate symbols only' in (OUT/'sample-takeoff.html').read_text(encoding='utf-8')
+assert 'Ongoing professional training' in (OUT/'training.html').read_text(encoding='utf-8')
+assert 'Portfolio practice' not in (OUT/'resume.html').read_text(encoding='utf-8')
 
 expected_downloads={'Eric_John_Cruz_Engineering_Resume.pdf','Eric_John_Cruz_Engineering_Resume.docx'}
 assert {f.name for f in (OUT/'downloads').iterdir()}==expected_downloads,'Unexpected public resume files'
