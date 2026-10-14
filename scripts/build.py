@@ -1,7 +1,7 @@
 """Generate the static career package from shared facts and checked sample inputs."""
 from pathlib import Path
 from html import escape as esc
-import argparse, json, shutil, math, re
+import argparse, json, shutil, math, re, os
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'dist'
@@ -300,14 +300,24 @@ def create_pdf(key,sections):
     from reportlab.lib.enums import TA_LEFT
     from reportlab.lib import colors
     from reportlab.lib.pagesizes import letter
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    # Embed an Arial-compatible font so PDF viewers do not substitute glyphs.
+    font_dirs=[Path(os.environ.get('RESUME_FONT_DIR','/usr/share/fonts/truetype/liberation2')),Path('/usr/share/fonts/truetype/liberation')]
+    if os.environ.get('CODEX_PRIMARY_RUNTIME_ROOT'):
+        font_dirs.append(Path(os.environ['CODEX_PRIMARY_RUNTIME_ROOT'])/'dependencies/native/libreoffice-headless/libreoffice/share/fonts/truetype')
+    font_dir=next((path for path in font_dirs if (path/'LiberationSans-Regular.ttf').is_file() and (path/'LiberationSans-Bold.ttf').is_file()),None)
+    if font_dir is None:raise RuntimeError('Install fonts-liberation or set RESUME_FONT_DIR to the Liberation Sans font directory.')
+    pdfmetrics.registerFont(TTFont('ResumeSans',str(font_dir/'LiberationSans-Regular.ttf')))
+    pdfmetrics.registerFont(TTFont('ResumeSansBold',str(font_dir/'LiberationSans-Bold.ttf')))
     styles=getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Name',fontName='Helvetica-Bold',fontSize=23,leading=26,spaceAfter=9))
-    styles.add(ParagraphStyle(name='Role',fontName='Helvetica-Bold',fontSize=11,leading=14,spaceAfter=7))
-    styles.add(ParagraphStyle(name='Contact',fontName='Helvetica',fontSize=9,leading=12,spaceAfter=2))
-    styles.add(ParagraphStyle(name='Section',fontName='Helvetica-Bold',fontSize=11,leading=14,spaceBefore=12,spaceAfter=5,keepWithNext=True))
-    styles.add(ParagraphStyle(name='Job',fontName='Helvetica-Bold',fontSize=10.5,leading=13,spaceBefore=8,spaceAfter=3,keepWithNext=True))
-    styles.add(ParagraphStyle(name='Meta',fontName='Helvetica',fontSize=9,leading=12,spaceAfter=4,keepWithNext=True))
-    styles.add(ParagraphStyle(name='Copy',fontName='Helvetica',fontSize=10.5,leading=13.2,spaceAfter=5))
+    styles.add(ParagraphStyle(name='Name',fontName='ResumeSansBold',fontSize=23,leading=26,spaceAfter=9))
+    styles.add(ParagraphStyle(name='Role',fontName='ResumeSansBold',fontSize=11,leading=14,spaceAfter=7))
+    styles.add(ParagraphStyle(name='Contact',fontName='ResumeSans',fontSize=9,leading=12,spaceAfter=2))
+    styles.add(ParagraphStyle(name='Section',fontName='ResumeSansBold',fontSize=11,leading=14,spaceBefore=12,spaceAfter=5,keepWithNext=True))
+    styles.add(ParagraphStyle(name='Job',fontName='ResumeSansBold',fontSize=10.5,leading=13,spaceBefore=8,spaceAfter=3,keepWithNext=True))
+    styles.add(ParagraphStyle(name='Meta',fontName='ResumeSans',fontSize=9,leading=12,spaceAfter=4,keepWithNext=True))
+    styles.add(ParagraphStyle(name='Copy',fontName='ResumeSans',fontSize=10.5,leading=13.2,spaceAfter=5))
     styles.add(ParagraphStyle(name='BulletText',parent=styles['Copy'],leftIndent=11,firstLineIndent=-9,spaceAfter=4))
     doc=SimpleDocTemplate(str(OUT/'downloads'/(VARIANTS[key]['filename']+'.pdf')),pagesize=letter,leftMargin=47.5,rightMargin=47.5,topMargin=41.8,bottomMargin=41.8,title=VARIANTS[key]['label'],author=PROFILE['name'])
     story=[Paragraph(esc(PROFILE['name']),styles['Name']),Paragraph(esc(VARIANTS[key]['label']),styles['Role'])]
@@ -319,7 +329,7 @@ def create_pdf(key,sections):
         content='<link href="'+esc(text)+'">'+esc(text)+'</link>' if kind=='p' and text.startswith('https://') else esc(text)
         story.append(Paragraph(('• ' if kind=='bullet' else '')+content,styles[style]))
     def footer(canvas,doc):
-        canvas.setFont('Helvetica',8);canvas.drawRightString(564,24,f'{PROFILE["name"]} | {doc.page}')
+        canvas.setFont('ResumeSans',8);canvas.drawRightString(564,24,f'{PROFILE["name"]} | {doc.page}')
     doc.build(story,onFirstPage=footer,onLaterPages=footer)
 
 def render_resumes():

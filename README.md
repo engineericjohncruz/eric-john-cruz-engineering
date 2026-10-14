@@ -13,7 +13,7 @@ The professional credential is **Registered Electrical Engineer (Philippines)**.
 
 ## Build
 
-Requires Python 3.11 or newer.
+Requires Python 3.11 or newer and Liberation Sans fonts for embedded PDF text (`fonts-liberation` on Ubuntu). Set `RESUME_FONT_DIR` when the fonts are installed in a custom directory.
 
 ```text
 python -m pip install -r requirements.txt
