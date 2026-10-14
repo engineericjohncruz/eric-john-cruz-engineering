@@ -48,6 +48,7 @@ jobs:
         run: |
           python -m http.server 8080 --directory dist > qa/server.log 2>&1 &
           node scripts/browser-check.cjs http://127.0.0.1:8080/
+          node scripts/photo-check.cjs http://127.0.0.1:8080/ --emit-previews
       - name: Save QA evidence
         if: always()
         uses: actions/upload-artifact@v4

@@ -35,6 +35,13 @@ fs.mkdirSync(qa, { recursive: true });
         if (info.alt !== 'Eric John Cruz, Electrical Engineer.') throw Error('Portrait alt text missing');
         const bytes = local ? fs.readFileSync(fileURLToPath(info.src)) : await (await page.request.get(info.src)).body();
         if (digest(bytes) !== digest(expected)) throw Error('Published portrait differs from the original photo');
+        if (file === 'index.html') {
+          const branding = await page.evaluate(() => {
+            const numbers = [...document.querySelectorAll('.card .number')];
+            return {header: document.querySelector('.brand small').textContent.trim(), title: document.querySelector('.hero-identity strong').textContent.trim(), specialties: document.querySelector('.hero-identity p').textContent.trim(), headingSize: parseFloat(getComputedStyle(document.querySelector('.hero h1')).fontSize), sansNumbers: numbers.length === 3 && numbers.every(el => getComputedStyle(el).fontStyle === 'normal' && getComputedStyle(el).fontFamily === getComputedStyle(document.body).fontFamily)};
+          });
+          if (branding.header !== 'Electrical Engineering & Technical Support' || branding.title !== 'Electrical Engineer' || branding.specialties !== 'Electrical Design | Estimating | Technical Documentation' || !branding.sansNumbers || branding.headingSize > 53) throw Error('Branding or typography regression');
+        }
         checks.push({ page: file, viewport: width, ...info, sha256: digest(bytes) });
         await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
         const label = file.replace('.html', '') + '-' + width;
