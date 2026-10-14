@@ -1,7 +1,7 @@
 {
   "name": "Eric John Cruz",
   "credential": "Registered Electrical Engineer, Philippines",
-  "headline": "Estimating, documentation and technical support.",
+  "headline": "Electrical drawings, quantity takeoffs and technical records.",
   "location": "Puerto Princesa City, Palawan, Philippines",
   "email": "cruzericjohn@gmail.com",
   "linkedin": "https://www.linkedin.com/in/eric-john-cruz-ree/",
@@ -17,9 +17,9 @@
       "dates": "June 2024 - Present",
       "type": "Engineering",
       "bullets": [
-        "Prepare electrical layouts, single-line diagrams, load and panel schedules, material lists and BOQs for small residential and building projects.",
-        "Review drawings and scope notes, organize quantity takeoffs, and document assumptions and revisions for project review.",
-        "Coordinate technical documentation and drawing updates with clients, contractors, inspectors and field personnel."
+        "Prepared electrical layouts, single-line diagrams, load and panel schedules, material lists and bills of quantities for small residential and building projects.",
+        "Checked drawings and scope notes, organized quantity takeoffs and recorded assumptions and revisions for project review.",
+        "Coordinated drawing changes and supporting documents with clients, contractors, inspectors and field personnel."
       ]
     },
     {
@@ -29,9 +29,9 @@
       "dates": "March 2025 - June 2025",
       "type": "Engineering documentation",
       "bullets": [
-        "Maintained electrical and automation records, including equipment lists, cable and panel schedules, manuals, work orders and test documentation.",
-        "Cross-checked single-line diagrams, wiring references and technical records for missing or inconsistent information.",
-        "Coordinated with site engineers to track revisions and documentation gaps for engineering review."
+        "Maintained equipment lists, cable and panel schedules, manuals, work orders and electrical test records during a power plant assignment.",
+        "Compared single-line diagrams and wiring references with technical records to identify missing or inconsistent information.",
+        "Tracked document revisions and followed up with site engineers on records that needed review."
       ]
     },
     {
@@ -41,20 +41,20 @@
       "dates": "June 2022 - August 2022",
       "type": "Supervised training",
       "bullets": [
-        "Assisted with inspection records for municipal electrical facilities, street lighting and small building works.",
-        "Supported AutoCAD drafting, basic cost estimates, BOQs and inspection reports under engineering supervision."
+        "Helped prepare inspection records for municipal electrical facilities, street lighting and small building works under supervision.",
+        "Assisted with AutoCAD drawings, basic cost estimates, bills of quantities and inspection reports."
       ]
     },
     {
       "id": "remote",
-      "title": "Digital Marketing and Remote Operations",
-      "company": "Freelance | SEO Leads and JDS1 Marketing engagements",
+      "title": "Remote Operations and Reporting",
+      "company": "Remote agency engagements",
       "dates": "February 2023 - Present",
       "type": "Remote business experience",
       "bullets": [
-        "Support SEO Leads as a current agency engagement; previously supported JDS1 Marketing. Agency work is separate from electrical engineering services.",
-        "Prepare analytical reports, research, content and client updates; coordinate reviews, follow-up tasks and quality checks across remote teams.",
-        "Work with Google Workspace, Excel, Basecamp, website publishing and CRM workflows to organize deliverables and track progress."
+        "Prepared reports, research notes and client updates for digital marketing engagements; this work was separate from my engineering assignments.",
+        "Tracked tasks and review comments, checked deliverables and followed up on missing information with remote team members.",
+        "Used spreadsheets, Google Workspace, Basecamp and CRM tools to maintain records and report progress."
       ]
     },
     {
@@ -64,17 +64,35 @@
       "dates": "August 2020 - March 2023",
       "type": "Customer support",
       "bullets": [
-        "Progressed to Subject Matter Expert in April 2021, supporting escalations, colleague coaching and quality monitoring.",
-        "Prepared performance reports and process guidance, building practical troubleshooting, documentation and customer communication skills."
+        "Promoted to Subject Matter Expert in April 2021; handled escalations, helped coach colleagues and supported quality reviews.",
+        "Prepared performance reports and process notes to help resolve recurring customer issues."
       ]
     }
   ],
   "tools": [
-    {"name": "AutoCAD 2D", "context": "Electrical drafting and drawing revisions"},
-    {"name": "Excel and Google Sheets", "context": "Takeoffs, schedules and reporting"},
-    {"name": "Bluebeam Revu", "context": "PDF drawing review and markups"},
-    {"name": "GroundPlan", "context": "Electrical estimating training and practice"},
-    {"name": "Google Workspace and Microsoft Office", "context": "Technical documents and remote collaboration"},
-    {"name": "Basecamp and GoHighLevel", "context": "Business task tracking and CRM workflows"}
+    {
+      "name": "AutoCAD 2D",
+      "context": "Electrical drafting and drawing revisions"
+    },
+    {
+      "name": "Excel and Google Sheets",
+      "context": "Takeoffs, schedules and reporting"
+    },
+    {
+      "name": "Bluebeam Revu",
+      "context": "PDF drawing review and markups"
+    },
+    {
+      "name": "GroundPlan",
+      "context": "Training exercises in electrical quantity takeoff, not completed client estimates"
+    },
+    {
+      "name": "Google Workspace and Microsoft Office",
+      "context": "Technical documents and remote collaboration"
+    },
+    {
+      "name": "Basecamp and GoHighLevel",
+      "context": "Business task tracking and CRM workflows"
+    }
   ]
 }
