@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const fs=require('node:fs');const path=require('node:path');
-const base=(process.argv[2]||'http://127.0.0.1:8080/').replace(/\/?$/,'/');
+const base=new URL((process.argv[2]||'http://127.0.0.1:8080/').replace(/\/?$/,'/')).href;
 const qa=path.join(__dirname,'..','qa');fs.mkdirSync(qa,{recursive:true});
 const local=base.startsWith('file:');
 (async()=>{
@@ -9,7 +9,7 @@ const local=base.startsWith('file:');
   const browser=await chromium.launch(launch);const page=await browser.newPage();
   const failures=[],checks=[],networkErrors=[];page.on('pageerror',e=>failures.push('JavaScript: '+e.message));
   page.on('response',r=>{if(r.url().startsWith(base)&&r.status()>=400)networkErrors.push(r.url()+': '+r.status());});
-  const pages=['index.html','experience.html','engineering.html','technical-sales.html','operations.html','projects.html','resumes.html','contact.html','case-takeoff.html','case-schedule-review.html','case-equipment-evaluation.html','case-document-control.html','training.html','resume-engineering.html','resume-technical-sales.html','resume-operations.html','sample-takeoff.html','sample-schedule-review.html','sample-equipment-evaluation.html','sample-document-control.html','404.html'];
+  const pages=['index.html','experience.html','engineering.html','technical-sales.html','operations.html','projects.html','resumes.html','contact.html','case-takeoff.html','case-schedule-review.html','case-equipment-evaluation.html','case-document-control.html','training.html','resume.html','sample-takeoff.html','sample-schedule-review.html','sample-equipment-evaluation.html','sample-document-control.html','404.html'];
   let axePath;try{axePath=require.resolve('axe-core/axe.min.js');}catch{}
   const a11y=[],focusedAudit=[];
   for(const width of [320,390,768,1365]){

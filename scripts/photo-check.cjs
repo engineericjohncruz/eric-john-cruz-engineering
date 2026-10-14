@@ -32,9 +32,16 @@ fs.mkdirSync(qa, { recursive: true });
         if (!info.src.startsWith(base) || !info.src.endsWith('/assets/eric-john-cruz.webp')) throw Error('Portrait must be locally hosted');
         if (info.naturalWidth !== 232 || info.naturalHeight !== 232 || Math.abs(info.width - info.height) > 1 || info.width > 232 || info.width < 100) throw Error('Portrait dimension failure');
         if (info.fit !== 'contain' || info.position !== '50% 50%' || !info.reserved || info.overflow) throw Error('Portrait crop/layout failure');
-        if (info.alt !== 'Eric John Cruz, Registered Electrical Engineer.') throw Error('Portrait alt text missing');
+        if (info.alt !== 'Eric John Cruz, Electrical Engineer.') throw Error('Portrait alt text missing');
         const bytes = local ? fs.readFileSync(fileURLToPath(info.src)) : await (await page.request.get(info.src)).body();
         if (digest(bytes) !== digest(expected)) throw Error('Published portrait differs from the original photo');
+        if (file === 'index.html') {
+          const branding = await page.evaluate(() => {
+            const numbers = [...document.querySelectorAll('.card .number')];
+            return {header: document.querySelector('.brand small').textContent.trim(), title: document.querySelector('.hero-identity strong').textContent.trim(), specialties: document.querySelector('.hero-identity p').textContent.trim(), headingSize: parseFloat(getComputedStyle(document.querySelector('.hero h1')).fontSize), sansNumbers: numbers.length === 3 && numbers.every(el => getComputedStyle(el).fontStyle === 'normal' && getComputedStyle(el).fontFamily === getComputedStyle(document.body).fontFamily)};
+          });
+          if (branding.header !== 'Electrical Engineering & Technical Support' || branding.title !== 'Electrical Engineer' || branding.specialties !== 'Electrical Design | Estimating | Technical Documentation' || !branding.sansNumbers || branding.headingSize > 53) throw Error('Branding or typography regression');
+        }
         checks.push({ page: file, viewport: width, ...info, sha256: digest(bytes) });
         await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
         const label = file.replace('.html', '') + '-' + width;
@@ -52,7 +59,7 @@ fs.mkdirSync(qa, { recursive: true });
       if (!(href.endsWith('.pdf') ? bytes.subarray(0, 5).toString() === '%PDF-' : bytes.subarray(0, 2).toString() === 'PK')) throw Error('Invalid download: ' + href);
       downloads.push(href);
     }
-    if (downloads.length !== 6) throw Error('Expected all six resume downloads');
+    if (downloads.length !== 2) throw Error('Expected one PDF and one Word resume download');
     fs.writeFileSync(path.join(qa, 'photo-checks.json'), JSON.stringify({ base, checks, downloads, failures: [] }, null, 2));
     console.log('PHOTO_CHECK_PASS ' + JSON.stringify({ base, responsiveChecks: checks.length, widths: [390,768,1365], photoBytes: expected.length, originalSha256: digest(expected), downloads: downloads.length }));
   } finally { await browser.close(); }

@@ -3,7 +3,7 @@ from pypdf import PdfReader
 import json,sys
 root=Path(__file__).resolve().parents[1]
 files=list((root/'qa/word-renders').glob('*.pdf'))
-assert len(files)==3,'Expected three rendered Word PDFs'
+assert len(files)==1,'Expected one rendered Word PDF'
 result=[]
 for file in files:
     reader=PdfReader(file)

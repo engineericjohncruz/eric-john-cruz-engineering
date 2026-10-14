@@ -42,10 +42,13 @@ jobs:
           libreoffice -env:UserInstallation=file:///tmp/engineering-lo --headless --convert-to pdf --outdir qa/word-renders dist/downloads/*.docx
           for file in qa/word-renders/*.pdf; do pdftoppm -scale-to 1500 -png "$file" "${file%.pdf}"; done
           python scripts/check-word.py
+      - name: Expose resume page renders for visual review
+        run: python scripts/preview-documents.py
       - name: Responsive interaction accessibility and download checks
         run: |
           python -m http.server 8080 --directory dist > qa/server.log 2>&1 &
           node scripts/browser-check.cjs http://127.0.0.1:8080/
+          node scripts/photo-check.cjs http://127.0.0.1:8080/ --emit-previews
       - name: Save QA evidence
         if: always()
         uses: actions/upload-artifact@v4

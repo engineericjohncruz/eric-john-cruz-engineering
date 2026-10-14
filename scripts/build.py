@@ -55,7 +55,7 @@ def records_svg():
 
 CASES = [
  {'slug':'takeoff','title':'Office lighting and outlet takeoff (practice)','category':'Electrical estimating','classification':'Practice exercise · fictional data','intro':'A small office example that separates counted devices, measured routes and explicit allowances before they reach the quantity schedule.','visual':plan_svg,
-  'context':'A fictional office tender includes two zones, a symbol plan and three route segments. The estimator needs an auditable quantity schedule without converting missing design information into invented quantities.',
+  'context':'A fictional office tender includes two zones, a symbol plan and three route segments. The worksheet records counted items, assumed route lengths and open scope questions.',
   'objective':'Produce a consistent symbol count, route-length build-up and clarification register that another estimator can check.',
   'role':'This is a fictional takeoff exercise prepared with AI assistance for this portfolio, not an estimate delivered to a client.',
   'approach':'Assign stable point IDs, count each symbol once, and reconcile the total against the point register. Keep route length separate from cable quantity. Add vertical and termination allowances explicitly. Do not add a blanket percentage to the measured quantity. No cable size, circuit design or unit price is inferred.',
@@ -65,7 +65,7 @@ CASES = [
   'result':'The quantity table shows where each count and allowance came from, and what remains unresolved.',
   'limit':'The drawing is not to scale. Route lengths and allowances are fictional inputs. The example does not establish cable sizes, circuit suitability, installation compliance, labour or price.'},
  {'slug':'schedule-review','title':'Small office connected-load worksheet (practice)','category':'Electrical documentation','classification':'Practice exercise · fictional data','intro':'A connected-load schedule with units, source assumptions and a review trail. Breaker ratings are kept separate from equipment demand.','visual':load_svg,
-  'context':'A preliminary office schedule needs a transparent load total. Using breaker ratings as if they were equipment loads would obscure the actual calculation.',
+  'context':'The worksheet totals assumed equipment loads in VA. Breaker ratings are not treated as equipment loads.',
   'objective':'Create a reviewable schedule from fictional equipment apparent-power inputs and identify the design information still required.',
   'role':'This calculation exercise uses fictional equipment data and was prepared with AI assistance. It is not an issued electrical design.',
   'approach':'Record quantity and apparent power per item in VA, then multiply and sum. At an assumed single-phase 230 V supply, divide total VA by voltage to illustrate aggregate connected current. Apply no diversity. Leave protection and cable sizing outside the numerical load check.',
@@ -84,9 +84,9 @@ CASES = [
   'checks':'The four fictional loads total 1.500 A. With 25% reserve, the comparison target is 1.875 A, equivalent to 45 W at 24 V DC. Only Option B’s 2.5 A available capacity meets that target. Option C is assessed at its assumed derated 1.7 A, not its nominal 2.0 A.',
   'result':'Option B passes the example current-capacity check; actual purchasing would still require supplier data.',
   'limit':'Options and specifications are fictional. Reserve is an example assumption, not a code requirement. Inrush, overload behaviour, input supply, ambient conditions, dimensions, approvals, availability and warranty require actual manufacturer data.'},
- {'slug':'document-control','title':'Engineering document revision register (practice)','category':'Engineering operations','classification':'Practice exercise · fictional data','intro':'A fictional industrial document register that separates revisions, missing evidence and review authority so a handover does not hide open work.','visual':records_svg,
-  'context':'An engineering team is collecting equipment records, schedules and test documentation. A file existing in a folder does not mean it is current, complete or approved.',
-  'objective':'Build an actionable document register and an exception log for a small fictional handover package.',
+ {'slug':'document-control','title':'Engineering document revision register (practice)','category':'Engineering operations','classification':'Practice exercise · fictional data','intro':'A fictional document register showing required revisions, missing attachments and records awaiting review.','visual':records_svg,
+  'context':'An engineering team is collecting equipment records, schedules and test documentation. Received files still need revision, attachment and review checks.',
+  'objective':'Prepare a document register and exception log for a small fictional handover package.',
   'role':'This fictional register is based on the types of records handled in document-control work. It was prepared with AI assistance and contains no employer documents.',
   'approach':'Assign each record a stable ID, required revision, received revision, review status and next owner. Use explicit hold conditions for missing attachments or unresolved revision mismatches. Close a record only when both evidence and review requirements are satisfied.',
   'tools':'Structured document register, JSON records, browser-readable exception table and Python validation.',
@@ -124,9 +124,9 @@ def details(slug):
     return table(['Record','Required / received','Review','Next action'],[[r['name'],r['required']+' / '+r['received'], 'Ready for transmittal' if record_ready(r) else 'Hold',r['next']] for r in DEMO['records']],'Handover register')+p('Naming example: DEMO_DOC-002_Cable-Schedule_Rev-C. Preserve the original received file, record its revision, and create a reviewed issue without silently overwriting the earlier record. Only the authorized reviewer can approve technical content.')
 
 def page(filename,title,description,body,current='',robots=True):
-    nav=''.join(f'<a href="{path}"'+(' aria-current="page"' if current==key else '')+f'>{label}</a>' for key,label,path in [('projects','Work samples','projects.html'),('expertise','Expertise','engineering.html'),('experience','Experience','experience.html'),('resumes','Résumés','resumes.html'),('contact','Contact','contact.html')])
+    nav=''.join(f'<a href="{path}"'+(' aria-current="page"' if current==key else '')+f'>{label}</a>' for key,label,path in [('experience','Experience','experience.html'),('expertise','Skills','engineering.html'),('projects','Work samples','projects.html'),('resumes','Résumé','resumes.html'),('contact','Contact','contact.html')])
     canonical=f'<link rel="canonical" href="{BASE}/{filename if filename!="index.html" else ""}"><meta property="og:url" content="{BASE}/{filename if filename!="index.html" else ""}">' if BASE else '<meta name="robots" content="noindex, nofollow">'
-    out=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} | Eric John Cruz, REE</title><meta name="description" content="{esc(description)}"><meta name="theme-color" content="#122c35"><meta property="og:type" content="website"><meta property="og:title" content="{esc(title)} | Eric John Cruz, REE"><meta property="og:description" content="{esc(description)}">{canonical}<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="header"><div class="wrap"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">EC</span><span>Eric John Cruz<small>Registered Electrical Engineer</small></span></a><button class="menu" aria-expanded="false" aria-controls="primary-nav" type="button">Menu</button><nav class="nav" id="primary-nav" aria-label="Primary">{nav}</nav></div></header><main class="wrap" id="main">{body}</main><footer class="footer"><div class="wrap"><p>Eric John Cruz, REE<br>Puerto Princesa City, Philippines</p><p><a href="mailto:{PROFILE['email']}">{PROFILE['email']}</a><br><a href="{PROFILE['linkedin']}">LinkedIn</a></p><p>Philippine engineering credential.<br>© 2026 Eric John Cruz</p></div></footer></body></html>'''
+    out=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)} | Eric John Cruz</title><meta name="description" content="{esc(description)}"><meta name="theme-color" content="#122c35"><meta property="og:type" content="website"><meta property="og:title" content="{esc(title)} | Eric John Cruz"><meta property="og:description" content="{esc(description)}">{canonical}<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head><body><a class="skip" href="#main">Skip to content</a><header class="header"><div class="wrap"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">EC</span><span>Eric John Cruz<small>Electrical Engineering &amp; Technical Support</small></span></a><button class="menu" aria-expanded="false" aria-controls="primary-nav" type="button">Menu</button><nav class="nav" id="primary-nav" aria-label="Primary">{nav}</nav></div></header><main class="wrap" id="main">{body}</main><footer class="footer"><div class="wrap"><p>Eric John Cruz<br>Puerto Princesa City, Philippines</p><p><a href="mailto:{PROFILE['email']}">{PROFILE['email']}</a><br><a href="{PROFILE['linkedin']}">LinkedIn</a></p><p>Electrical Engineering &amp; Technical Support<br>© 2026 Eric John Cruz</p></div></footer></body></html>'''
     if filename == '404.html' and BASE:
         # Pages serves this document at arbitrary missing paths, including nested URLs.
         out = re.sub(r'((?:href|src)=")([^"#][^"]*)"',
@@ -138,22 +138,22 @@ def pagehead(kicker,title,intro):return f'<div class="page-head"><span class="ey
 def project_card(c): return f'''<article class="card project"><div class="visual">{c['visual']()}</div><div class="card-body"><span class="tag">{esc(c['classification'])} · {esc(c['category'])}</span><h3><a href="case-{c['slug']}.html">{esc(c['title'])}</a></h3><p>{esc(c['intro'])}</p><a class="text-link" href="case-{c['slug']}.html">View worksheet and assumptions</a></div></article>'''
 
 PATHWAYS = [
- ('engineering','01','Electrical engineering and estimating','Drawing review, quantity takeoffs, BOQs and technical documentation that make scope easier to check.'),
- ('technical-sales','02','Technical sales and applications','Technical research, requirement comparisons and organized quotation inputs, supported by client communication experience.'),
- ('operations','03','Engineering operations and remote support','Document control, project follow-up, reporting and practical coordination across technical and business teams.')
+ ('engineering','01','Electrical engineering and estimating','Electrical layouts, load and panel schedules, quantity takeoffs and bills of quantities.'),
+ ('technical-sales','02','Technical sales and applications','Equipment specifications, supplier questions and quotation information, supported by customer communication experience.'),
+ ('operations','03','Engineering operations and remote support','Document registers, revisions, spreadsheet reports and follow-up on outstanding records.')
 ]
 
 def portrait(priority=False):
-    return '<img class="professional-portrait" src="assets/eric-john-cruz.webp" width="232" height="232" alt="Eric John Cruz, Registered Electrical Engineer." decoding="async"'+(' fetchpriority="high"' if priority else ' loading="lazy"')+'>'
+    return '<img class="professional-portrait" src="assets/eric-john-cruz.webp" width="232" height="232" alt="Eric John Cruz, Electrical Engineer." decoding="async"'+(' fetchpriority="high"' if priority else ' loading="lazy"')+'>'
 
 def render_site():
-    home=f'''<section class="hero"><div><span class="eyebrow">Eric John Cruz, REE · Philippines</span><h1>Electrical drawings, quantity takeoffs and technical records.</h1><p class="intro">I am a Registered Electrical Engineer in the Philippines. My work has included building electrical layouts and schedules, power plant document records, and municipal engineering inspection support. I also have experience with spreadsheet reporting and remote coordination.</p><div class="actions">{btn('View practice examples','projects.html')}{btn('Choose a résumé','resumes.html',True)}</div><p class="location">Based in Puerto Princesa City · Open to engineering and technical support opportunities</p></div><aside class="hero-figure"><div class="label">From my work history</div><div class="hero-summary"><h2>Drawings, schedules and equipment records</h2><ul><li>Electrical layouts, single-line diagrams and material lists for small projects</li><li>Cable schedules, equipment registers and manuals from power plant documentation work</li><li>Inspection records and drafting during supervised municipal training</li></ul><a class="text-link" href="experience.html">See roles and dates</a></div></aside></section><div class="credentials"><div><small>Professional qualification</small>Registered Electrical Engineer, Philippines</div><div><small>Engineering education</small>BS Electrical Engineering · Palawan State University</div><div><small>Professional background</small>Engineering documentation + remote operations</div></div>'''
-    home=home.replace('<h1>', '<div class="hero-identity">'+portrait(True)+'<div><strong>Registered Electrical Engineer</strong><p>Electrical Engineering | Technical Sales | Engineering Support</p></div></div><h1>',1)
-    home+='<section class="section"><div class="section-head"><h2>Areas of work</h2><p>Engineering documentation, estimating practice, equipment research and records management.</p></div><div class="grid">'
+    home=f'''<section class="hero"><div><span class="eyebrow">Eric John Cruz · Philippines</span><h1>Electrical drawings, quantity takeoffs and technical records.</h1><p class="intro">I prepare electrical layouts, schedules and quantity takeoffs for small building projects. My experience also includes power plant electrical and automation records, supervised municipal engineering work, and spreadsheet reporting.</p><div class="actions">{btn('View practice examples','projects.html')}{btn('View résumé','resumes.html',True)}</div><p class="location">Based in Puerto Princesa City · Open to engineering and technical support opportunities</p></div><aside class="hero-figure"><div class="label">From my work history</div><div class="hero-summary"><h2>Drawings, schedules and equipment records</h2><ul><li>Electrical layouts, single-line diagrams and material lists for small projects</li><li>Cable schedules, equipment registers and manuals from power plant documentation work</li><li>Inspection records and drafting during supervised municipal training</li></ul><a class="text-link" href="experience.html">See roles and dates</a></div></aside></section><div class="credentials"><div><small>Professional qualification</small>Registered Electrical Engineer (Philippines)</div><div><small>Engineering education</small>BS Electrical Engineering · Palawan State University</div><div><small>Professional background</small>Engineering documentation + remote operations</div></div>'''
+    home=home.replace('<h1>', '<div class="hero-identity">'+portrait(True)+'<div><strong>Electrical Engineer</strong><p>Electrical Design | Estimating | Technical Documentation</p></div></div><h1>',1)
+    home+='<section class="section"><div class="section-head"><h2>Areas of work</h2><p>Electrical drawings, quantity takeoffs, equipment information and technical records.</p></div><div class="grid">'
     for slug,num,title,desc in PATHWAYS:home+=f'<article class="card"><span class="number">{num}</span><h3>{title}</h3><p>{desc}</p><a class="text-link" href="{slug}.html">See details</a></article>'
     home+='''</div></section><section class="section"><div class="section-head"><h2>Engineering work I have done</h2><p>My work history covers drawings, engineering records and supervised site documentation. Project files and employer records are not displayed publicly.</p></div><div class="grid two"><article class="card"><h3>Independent electrical projects</h3><p>Prepared layouts, single-line diagrams, panel and load schedules, material lists and bills of quantities for small building projects.</p></article><article class="card"><h3>Power plant technical records</h3><p>Maintained equipment lists, cable and panel schedules, manuals and test records. Checked references and followed up on missing information with site engineers.</p></article><article class="card"><h3>Municipal engineering placement</h3><p>Assisted with street-lighting and building inspection records, AutoCAD drawings and cost estimates under supervision.</p></article></div><div class="actions"><a class="button secondary" href="experience.html">See the experience details</a></div></section>'''
     home+='<section class="section"><div class="section-head"><div><span class="eyebrow">Practice examples</span><h2>Practice worksheets and calculations</h2></div><p>These fictional exercises show sample calculations, registers and review notes. They are not completed customer projects.</p></div><div class="grid two">'+''.join(project_card(c) for c in CASES)+'</div></section>'
-    home+='<section class="section"><div class="section-head"><h2>Résumés and contact</h2><p>Download an engineering-focused résumé or contact me about a relevant opening.</p></div><div class="actions">'+btn('View the résumé hub','resumes.html')+btn('Contact Eric','contact.html',True)+'</div></section>'
+    home+='<section class="section"><div class="section-head"><h2>Résumé and contact</h2><p>View my engineering résumé or contact me about a relevant opening.</p></div><div class="actions">'+btn('View résumé','resumes.html')+btn('Contact Eric','contact.html',True)+'</div></section>'
     page('index.html','Electrical Engineering and Documentation','Eric John Cruz, Philippine Registered Electrical Engineer. Building electrical drawings, schedules, engineering records and quantity takeoffs.',home)
 
     exp=pagehead('Experience','Electrical drawings, plant records and reporting','I have worked on small-building electrical drawings and schedules, handled electrical and automation records in a power plant assignment, and assisted with municipal inspection documentation.')
@@ -161,12 +161,12 @@ def render_site():
     exp+='<section><h2>Engineering experience</h2><div class="timeline">'
     def job(e):return f'<article class="job"><div class="date">{esc(e["dates"])}<br>{esc(e["type"])}</div><div><h3>{esc(e["title"])}</h3><p class="company">{esc(e["company"])}</p>{ul(e["bullets"])}</div></article>'
     exp+=''.join(job(e) for e in PROFILE['experience'][:3])+'</div></section><section class="section"><h2>Remote business and customer support</h2><p class="intro">This is separate from my electrical engineering work, but involved reporting, record keeping and following up on outstanding tasks.</p>'+''.join(job(e) for e in PROFILE['experience'][3:])+'</section>'
-    exp+='<section class="section"><h2>Education and professional development</h2><p><strong>'+PROFILE['education']+'</strong><br>'+PROFILE['university']+' · '+PROFILE['education_dates']+'</p><p><strong>Registered Electrical Engineer</strong><br>Philippine professional qualification</p><p>Electrical estimating training and GroundPlan practice cover drawing review, system-by-system takeoff, assumptions, clarification registers and RFQ preparation.</p><a class="text-link" href="training.html">See my estimating training</a></section>'
+    exp+='<section class="section"><h2>Education and professional development</h2><p><strong>'+PROFILE['education']+'</strong><br>'+PROFILE['university']+' · '+PROFILE['education_dates']+'</p><p><strong>Registered Electrical Engineer (Philippines)</strong></p><p>Electrical estimating training and GroundPlan practice cover drawing review, system-by-system takeoff, assumptions, clarification registers and RFQ preparation.</p><a class="text-link" href="training.html">See my estimating training</a></section>'
     exp+='<section class="section"><h2>Tools in context</h2><dl class="tool-list">'+''.join(f'<div><dt>{esc(t["name"])}</dt><dd>{esc(t["context"])}</dd></div>' for t in PROFILE['tools'])+'</dl></section>'
     page('experience.html','Professional Experience','Engineering, documentation, customer support and remote professional experience of Eric John Cruz.',exp,'experience')
 
     configs={
-     'engineering':('Electrical engineering and estimating','Electrical drawings and quantity takeoffs','I have prepared electrical drawings, schedules and bills of quantities for small projects, and I am developing Australian estimating skills.',
+     'engineering':('Electrical engineering and estimating','Electrical drawings and quantity takeoffs','I prepare electrical drawings, schedules and bills of quantities for small building projects. My current training covers Australian electrical estimating and GroundPlan quantity takeoffs.',
       [('Drawing and scope review','Read electrical layouts, legends, schedules and scope notes. Identify missing information and carry it into a clarification register.'),('Takeoffs and BOQs','Organize device counts and material quantities with drawing references, units, assumptions and revision notes.'),('Design documentation support','Prepare or revise electrical layouts, single-line diagrams and load/panel schedules for review within the agreed project scope.'),('Estimating development','Continue GroundPlan practice and structured tender review. Training-based activities are labelled as practice.')],['takeoff','schedule-review'],'engineering'),
      'technical-sales':('Technical sales and applications','Equipment research and quotation support','I am pursuing technical sales and applications support, drawing on my engineering studies, documentation work and customer service experience.',
       [('Requirements clarification','Identify the specifications, quantities and unanswered questions in a customer request.'),('Equipment research and comparison','Compare supplied specifications and identify missing data, assumptions, alternatives and manufacturer confirmations.'),('Quotation support','Prepare scope summaries, schedules and supplier questions. Track inclusions, exclusions, validity and follow-up actions.'),('Customer communication','Use my customer support and technical documentation background when explaining product information or following up on quotations.')],['equipment-evaluation','takeoff'],'technical-sales'),
@@ -177,7 +177,7 @@ def render_site():
         body=pagehead(kicker,title,intro)+'<section class="section"><div class="grid two">'+''.join(f'<article class="card"><h2 style="font-size:1.5rem">{esc(h)}</h2><p>{esc(t)}</p></article>' for h,t in blocks)+'</div></section>'
         if slug=='technical-sales':body+='<p class="notice">I am applying for technical sales and applications support roles. My work history is in engineering documentation and customer support, not a previous sales engineer position.</p>'
         if slug=='engineering':body+='<p class="notice">Engineering work follows the agreed scope and applicable review requirements. My REE credential is a Philippine qualification; overseas regulated design and approval require the relevant local authority.</p>'
-        body+='<section class="section"><h2>Related practice exercises</h2><div class="grid two">'+''.join(project_card(c) for c in CASES if c['slug'] in selected)+'</div></section><div class="actions">'+btn('Open the relevant résumé',f'resume-{variant}.html')+btn('Contact me','contact.html',True)+'</div>'
+        body+='<section class="section"><h2>Related practice exercises</h2><div class="grid two">'+''.join(project_card(c) for c in CASES if c['slug'] in selected)+'</div></section><div class="actions">'+btn('View résumé','resume.html')+btn('Contact me','contact.html',True)+'</div>'
         page(slug+'.html',kicker,intro,body,'expertise')
 
     body=pagehead('Projects and work samples','Practice exercises, with assumptions shown','Four fictional worksheets prepared with AI assistance, plus an account of my Australian estimating training. These are not client case studies.')
@@ -200,61 +200,55 @@ def render_site():
     train=pagehead('Training and practice','Residential tender scope review','My Australian estimating training covers drawing notes, quantity counts, GroundPlan measurements and questions raised with my instructor.')
     train+='<div class="content-grid"><article class="prose">'+''.join('<h2>'+h+'</h2>'+p(t) for h,t in [
       ('Context','An Australian residential estimating training project involves multiple electrical systems, general notes and supplier-quoted packages. The public account describes the method without publishing the project drawings, specification or course material.'),
-      ('Objective','Practice separating measured quantities, allowances and unresolved scope so the takeoff can be reviewed without losing the basis of each item.'),
+      ('Objective','Practice separating measured quantities, allowances and unresolved scope so the takeoff can be reviewed while retaining the source and basis of each item.'),
       ('My role','Review drawings and notes, organize system-based takeoff items, and raise clarification questions during training. This is developing estimating experience, not a completed professional tender or trainer-approved estimate.'),
       ('Technical approach','Start with the drawing register and known scale references. Read notes and legends before counting. Label an allowance in the item name and carry the fuller explanation into the assumptions register. Keep supplier package inclusions visible when reviewing quotations.'),
       ('Tools','GroundPlan for practice measurements and counts; spreadsheets and written registers for assumptions, revisions and scope questions.'),
       ('Deliverables and checks','The training records show work on note-based items, conduit allowances, communications questions and switchboard RFQ scope. Reconcile per-system quantities, distinguish counts from allowances, and cross-check package inclusions against the supplied specification.'),
-      ('Current result','This is still training work. Final takeoff quantities and trainer approval are not documented here.')])+'</article><aside class="aside"><h2>Evidence boundary</h2><p class="small">Training documents establish the learning context. They are not public case-study assets or proof of an approved estimate.</p><div class="actions">'+btn('See a takeoff practice exercise','case-takeoff.html')+'</div></aside></div>'
+      ('Current result','This is still training work. Final takeoff quantities and trainer approval are not documented here.')])+'</article><aside class="aside"><h2>Training status</h2><p class="small">The account describes training in progress. Project drawings are private, and no approved client estimate is represented.</p><div class="actions">'+btn('See a takeoff practice exercise','case-takeoff.html')+'</div></aside></div>'
     page('training.html','Estimating Training','GroundPlan and residential tender review training: quantities, assumptions, RFIs and supplier package scope.',train,'projects')
 
     contact=pagehead('Contact','Contact Eric John Cruz','Email me about an electrical engineering, estimating or technical support position.')
-    contact+='<div class="grid two"><section class="contact-block"><h2>Email Eric</h2><p><a class="wide-link" href="mailto:'+PROFILE['email']+'?subject=Engineering%20or%20technical%20support%20opportunity">'+PROFILE['email']+'</a></p><button class="copy" data-copy-email type="button">Copy email address</button><p class="small" id="copy-status" aria-live="polite"></p><p class="small">Puerto Princesa City, Palawan, Philippines</p></section><section class="contact-block"><h2>Useful details to include</h2>'+ul(['Role or project focus','Type of drawings, records or technical information involved','Expected deliverables and review process','Location, working arrangement and target timing'])+'<a class="text-link" href="'+PROFILE['linkedin']+'">View my LinkedIn profile</a></section></div><div class="actions">'+btn('Choose a résumé','resumes.html')+btn('View practice examples','projects.html',True)+'</div>'
+    contact+='<div class="grid two"><section class="contact-block"><h2>Email Eric</h2><p><a class="wide-link" href="mailto:'+PROFILE['email']+'?subject=Engineering%20or%20technical%20support%20opportunity">'+PROFILE['email']+'</a></p><button class="copy" data-copy-email type="button">Copy email address</button><p class="small" id="copy-status" aria-live="polite"></p><p class="small">Puerto Princesa City, Palawan, Philippines</p></section><section class="contact-block"><h2>Useful details to include</h2>'+ul(['Role or project focus','Type of drawings, records or technical information involved','Expected deliverables and review process','Location, working arrangement and target timing'])+'<a class="text-link" href="'+PROFILE['linkedin']+'">View my LinkedIn profile</a></section></div><div class="actions">'+btn('View résumé','resumes.html')+btn('View practice examples','projects.html',True)+'</div>'
     page('contact.html','Contact','Contact Eric John Cruz about engineering, estimating, technical support and remote operations opportunities.',contact,'contact')
 
 VARIANTS={
  'engineering':{
-  'label':'Electrical Engineering and Estimating','filename':'Eric_John_Cruz_Electrical_Engineering',
-  'summary':'I am a Registered Electrical Engineer in the Philippines. I have prepared electrical layouts, single-line diagrams, panel and load schedules, takeoffs and material lists for small building projects. In a power plant assignment, I maintained technical records and checked drawing references. I am currently practicing Australian electrical estimating using GroundPlan.',
-  'skills':['Drawing and specification review; electrical layouts and single-line diagrams.','Quantity takeoffs, material lists, BOQs, load and panel schedules.','Drawing revisions, assumptions, clarification registers and technical file organization.','AutoCAD 2D, Bluebeam Revu, Excel and Google Sheets; GroundPlan training and practice.'],
-  'projects':['Quantity takeoff practice: office example with symbol register, measured inputs, explicit allowances and reconciliation checks.','Connected-load practice: apparent-load calculation with traceable inputs and a clear separation between demand and device ratings.'],
-  'ids':['freelance','rapid','kalayaan']},
- 'technical-sales':{
-  'label':'Technical Sales and Applications Support','filename':'Eric_John_Cruz_Technical_Sales',
-  'summary':'I am a Registered Electrical Engineer with experience preparing drawings, schedules and technical records. My background includes reviewing requirements, organizing technical information and handling customer escalations. I am pursuing technical sales and applications support roles where I can assist with specifications, quotations and follow-up.',
-  'skills':['Technical requirement interpretation, equipment research and specification comparison.','Quotation inputs, material schedules, assumptions and supplier clarification lists.','Customer communication, escalation support, documentation and remote coordination.','Excel, Google Sheets, AutoCAD 2D, Google Workspace, Basecamp and CRM workflows.'],
-  'projects':['Equipment comparison practice: 24 V DC capacity comparison with a current budget, stated reserve and supplier clarification list.','Takeoff practice: scope and material quantity example supporting clearer quotation inputs.'],
-  'ids':['freelance','rapid','kalayaan']},
- 'operations':{
-  'label':'Engineering Operations and Remote Support','filename':'Eric_John_Cruz_Engineering_Operations',
-  'summary':'I am a Registered Electrical Engineer who has handled equipment lists, cable and panel schedules, manuals and test records for a power plant assignment. I have also worked in remote reporting and task tracking, preparing updates, checking deliverables and following up on missing information.',
-  'skills':['Engineering document control, revision tracking and equipment records.','Project administration, action tracking, reporting and handover preparation.','Takeoff and BOQ documentation, research and procurement record support.','Excel, Google Sheets, Microsoft Office, Google Workspace, Basecamp and CRM workflows.'],
-  'projects':['Document register practice: example showing required versus received revisions, missing attachments and explicit review holds.','Equipment comparison practice: requirements worksheet with documented next actions.'],
-  'ids':['rapid','freelance','kalayaan']}
+  'label':PROFILE['professional_title'],
+  'filename':'Eric_John_Cruz_Engineering_Resume',
+  'summary':'Registered Electrical Engineer (Philippines) with experience preparing electrical layouts, single-line diagrams, load and panel schedules, takeoffs and bills of quantities for small building projects. Background includes power plant electrical and automation documentation, supervised municipal engineering work, and technical records review.',
+  'skills':[
+    'Electrical drawings and schedules: layouts, single-line diagrams, load and panel schedules.',
+    'Estimating documentation: material takeoffs, bills of quantities, scope notes and drawing revisions.',
+    'Technical records: equipment lists, cable schedules, manuals, test documents and revision registers.',
+    'Tools used for drafting, review and records: AutoCAD 2D, Bluebeam Revu, Microsoft Excel, Google Sheets, Microsoft Office and Google Workspace. GroundPlan: training and practice.'
+  ]}
 }
 
-def resume_sections(key):
-    v=VARIANTS[key];items=[]
-    items += [('h2','Professional summary'),('p',v['summary']),('h2','Relevant capabilities')]
+def resume_sections(key='engineering'):
+    v=VARIANTS[key]
+    items=[('h2','Professional summary'),('p',v['summary']),('h2','Technical skills')]
     items += [('bullet',x) for x in v['skills']]
     items += [('h2','Engineering experience')]
-    for id in v['ids']:
+    for id in ['freelance','rapid','kalayaan']:
         e=next(x for x in PROFILE['experience'] if x['id']==id)
         items += [('h3',e['title']),('meta',e['company']+' | '+e['dates'])]
-        bullets=e['bullets'][:2] if key!='engineering' else e['bullets']
-        items += [('bullet',x) for x in bullets]
-    items += [('break',''),('h2','Remote operations and customer support')]
-    for e in PROFILE['experience'][3:]:
-        items += [('h3',e['title']),('meta',e['company']+' | '+e['dates'])]+[('bullet',x) for x in e['bullets']]
-    items += [('h2','Technical practice exercises'),('p','Fictional practice exercises created with AI assistance, not completed client assignments.')]+[('bullet',x) for x in v['projects']]
-    items += [('h2','Education and credential'),('p',PROFILE['education']+' | '+PROFILE['university']+' | '+PROFILE['education_dates']),('p',PROFILE['credential'])]
-    items += [('h2','Professional development'),('p','Australian electrical estimating training: reviewing drawings and notes, measuring quantities in GroundPlan, recording allowances and preparing clarification questions.')]
+        items += [('bullet',x) for x in e['bullets']]
+    items += [('break',''),('h2','Additional professional experience')]
+    e=next(x for x in PROFILE['experience'] if x['id']=='remote')
+    items += [('h3',e['title']),('meta',e['company']+' | '+e['dates'])]
+    items += [('bullet','Prepared spreadsheet reports, research notes and client updates for remote digital marketing engagements, separate from electrical engineering assignments.'),('bullet','Tracked tasks and review comments, checked deliverables and followed up on missing information with remote team members.')]
+    e=next(x for x in PROFILE['experience'] if x['id']=='foundever')
+    items += [('h3',e['title']),('meta',e['company']+' | '+e['dates'])]+[('bullet',x) for x in e['bullets']]
+    items += [('h2','Education and professional qualification'),('p',PROFILE['education']+' | '+PROFILE['university']+' | '+PROFILE['education_dates']),('p',PROFILE['credential'])]
+    items += [('h2','Engineering training'),('p','Australian electrical estimating training and GroundPlan practice: reviewing drawings and notes, measuring quantities, recording allowances and preparing clarification questions. Training exercises are separate from completed client estimates.')]
+    items += [('h2','Portfolio practice'),('p','Published fictional takeoff, connected-load, equipment-comparison and document-register worksheets, prepared with AI assistance. These illustrate technical methods and do not represent completed client assignments or approved designs.')]
     if BASE:items += [('h2','Portfolio'),('p',BASE+'/')]
     return items
 
 def resume_html(key,sections):
     v=VARIANTS[key]
-    s='<article class="resume-paper"><h1>'+PROFILE['name']+', REE</h1><p><strong>'+v['label']+'</strong></p><p class="resume-meta">'+PROFILE['location']+'<br><a href="mailto:'+PROFILE['email']+'">'+PROFILE['email']+'</a><br><a href="'+PROFILE['linkedin']+'">linkedin.com/in/eric-john-cruz-ree/</a></p>'
+    s='<article class="resume-paper"><h1>'+PROFILE['name']+'</h1><p><strong>'+v['label']+'</strong></p><p class="resume-meta">'+PROFILE['location']+'<br><a href="mailto:'+PROFILE['email']+'">'+PROFILE['email']+'</a><br><a href="'+PROFILE['linkedin']+'">linkedin.com/in/eric-john-cruz-ree/</a></p>'
     inlist=False
     for kind,text in sections:
         if kind=='bullet':
@@ -263,9 +257,24 @@ def resume_html(key,sections):
         if inlist:s+='</ul>';inlist=False
         if kind=='break':s+='<div class="page-break"></div>'
         elif kind in ['h2','h3']:s+=f'<{kind}>{esc(text)}</{kind}>'
-        else:s+=f'<p{" class="+chr(34)+"resume-meta"+chr(34) if kind=="meta" else ""}>{esc(text)}</p>'
+        else:
+            content='<a href="'+esc(text)+'">'+esc(text)+'</a>' if text.startswith('https://') else esc(text)
+            s+=f'<p{" class="+chr(34)+"resume-meta"+chr(34) if kind=="meta" else ""}>{content}</p>'
     if inlist:s+='</ul>'
     return s+'</article>'
+
+def word_link(paragraph,text,url,size=9):
+    from docx.oxml import OxmlElement
+    from docx.oxml.ns import qn
+    from docx.opc.constants import RELATIONSHIP_TYPE as RT
+    link=OxmlElement('w:hyperlink')
+    link.set(qn('r:id'),paragraph.part.relate_to(url,RT.HYPERLINK,is_external=True))
+    run=OxmlElement('w:r');properties=OxmlElement('w:rPr')
+    font=OxmlElement('w:rFonts');font.set(qn('w:ascii'),'Arial');font.set(qn('w:hAnsi'),'Arial');properties.append(font)
+    sz=OxmlElement('w:sz');sz.set(qn('w:val'),str(int(size*2)));properties.append(sz)
+    color=OxmlElement('w:color');color.set(qn('w:val'),'000000');properties.append(color)
+    underline=OxmlElement('w:u');underline.set(qn('w:val'),'single');properties.append(underline)
+    run.append(properties);t=OxmlElement('w:t');t.text=text;run.append(t);link.append(run);paragraph._p.append(link)
 
 def create_docx(key,sections):
     from docx import Document
@@ -282,17 +291,21 @@ def create_docx(key,sections):
         st=d.styles[name];st.font.size=Pt(size);st.font.bold=True;st.paragraph_format.space_before=Pt(11);st.paragraph_format.space_after=Pt(5)
     d.styles['List Bullet'].paragraph_format.space_after=Pt(4)
     d.core_properties.author=PROFILE['name'];d.core_properties.title=VARIANTS[key]['label'];d.core_properties.subject='Professional resume';d.core_properties.keywords=''
-    d.add_paragraph(PROFILE['name']+' REE',style='Title')
+    d.add_paragraph(PROFILE['name'],style='Title')
     q=d.add_paragraph();q.add_run(VARIANTS[key]['label']).bold=True
-    for x in [PROFILE['location'],PROFILE['email'],PROFILE['linkedin']]:
-        q=d.add_paragraph(x);q.paragraph_format.space_after=Pt(3);q.runs[0].font.size=Pt(9)
+    for x,url in [(PROFILE['location'],None),(PROFILE['email'],'mailto:'+PROFILE['email']),(PROFILE['linkedin'],PROFILE['linkedin'])]:
+        q=d.add_paragraph();q.paragraph_format.space_after=Pt(3)
+        if url:word_link(q,x,url)
+        else:q.add_run(x).font.size=Pt(9)
     for kind,text in sections:
         if kind=='break':d.add_page_break();continue
         if kind=='h2':q=d.add_paragraph(text.upper(),style='Heading 1')
         elif kind=='h3':q=d.add_paragraph(text,style='Heading 2')
         elif kind=='bullet':q=d.add_paragraph(text,style='List Bullet')
         else:
-            q=d.add_paragraph(text)
+            q=d.add_paragraph()
+            if kind=='p' and text.startswith('https://'):word_link(q,text,text,10.5)
+            else:q.add_run(text)
             if kind=='meta':
                 for r in q.runs:r.font.size=Pt(9)
                 q.paragraph_format.keep_with_next=True
@@ -319,37 +332,42 @@ def create_pdf(key,sections):
     styles.add(ParagraphStyle(name='Copy',fontName='Helvetica',fontSize=10.5,leading=13.2,spaceAfter=5))
     styles.add(ParagraphStyle(name='BulletText',parent=styles['Copy'],leftIndent=11,firstLineIndent=-9,spaceAfter=4))
     doc=SimpleDocTemplate(str(OUT/'downloads'/(VARIANTS[key]['filename']+'.pdf')),pagesize=letter,leftMargin=47.5,rightMargin=47.5,topMargin=41.8,bottomMargin=41.8,title=VARIANTS[key]['label'],author=PROFILE['name'])
-    story=[Paragraph(esc(PROFILE['name']+' REE'),styles['Name']),Paragraph(esc(VARIANTS[key]['label']),styles['Role'])]
-    for x in [PROFILE['location'],PROFILE['email'],PROFILE['linkedin']]:story.append(Paragraph(esc(x),styles['Contact']))
+    story=[Paragraph(esc(PROFILE['name']),styles['Name']),Paragraph(esc(VARIANTS[key]['label']),styles['Role'])]
+    for x,url in [(PROFILE['location'],None),(PROFILE['email'],'mailto:'+PROFILE['email']),(PROFILE['linkedin'],PROFILE['linkedin'])]:story.append(Paragraph('<link href="'+esc(url)+'">'+esc(x)+'</link>' if url else esc(x),styles['Contact']))
     for kind,text in sections:
         if kind=='break':story.append(PageBreak());continue
         style={'h2':'Section','h3':'Job','meta':'Meta','p':'Copy','bullet':'BulletText'}[kind]
         text=text.upper() if kind=='h2' else text
-        story.append(Paragraph(('• ' if kind=='bullet' else '')+esc(text),styles[style]))
+        content='<link href="'+esc(text)+'">'+esc(text)+'</link>' if kind=='p' and text.startswith('https://') else esc(text)
+        story.append(Paragraph(('• ' if kind=='bullet' else '')+content,styles[style]))
     def footer(canvas,doc):
         canvas.setFont('Helvetica',8);canvas.drawRightString(564,24,f'{PROFILE["name"]} | {doc.page}')
     doc.build(story,onFirstPage=footer,onLaterPages=footer)
 
 def render_resumes():
-    hub=pagehead('Résumés','Three résumés for different roles','My experience is organized for electrical engineering, technical sales support and engineering operations applications. Word and PDF versions are available.')+'<div class="grid">'
-    for key,v in VARIANTS.items():
-        sec=resume_sections(key);create_docx(key,sec);create_pdf(key,sec)
-        hub+='<article class="card"><h2 style="font-size:1.55rem">'+v['label']+'</h2><p>'+({'engineering':'For electrical drawing support, estimating and technical documentation roles.','technical-sales':'For equipment research, technical sales support and quotation coordination.','operations':'For technical records, reporting and engineering administration.'}[key])+'</p><div class="download-row">'+btn('Read online','resume-'+key+'.html')+'</div><p class="small" style="margin-top:20px"><a href="downloads/'+v['filename']+'.docx" download>Download Word</a> · <a href="downloads/'+v['filename']+'.pdf" download>Download PDF</a></p></article>'
-        body='<div class="actions no-print">'+btn('Download PDF','downloads/'+v['filename']+'.pdf')+btn('Download Word','downloads/'+v['filename']+'.docx',True)+'<a class="button secondary" href="resumes.html">All résumé versions</a></div>'+resume_html(key,sec)
-        page('resume-'+key+'.html',v['label']+' Resume',v['summary'],body,'resumes')
-    page('resumes.html','Resume Downloads','Choose electrical engineering, technical sales or engineering operations resumes in HTML, Word and PDF.',hub+'</div>','resumes')
+    key='engineering';v=VARIANTS[key];sections=resume_sections(key)
+    create_docx(key,sections);create_pdf(key,sections)
+    links=btn('Download PDF','downloads/'+v['filename']+'.pdf')+btn('Download Word','downloads/'+v['filename']+'.docx',True)
+    hub=pagehead('Résumé','Engineering résumé','Electrical drawings, estimating documentation, technical records and engineering support experience.')
+    hub+='<section class="resume-hub"><h2>Eric John Cruz</h2><p>'+esc(v['label'])+'</p><p class="small">Registered Electrical Engineer (Philippines)</p><div class="actions">'+btn('View Résumé','resume.html')+'<a class="button secondary" href="downloads/'+v['filename']+'.pdf" download>Download PDF</a><a class="button secondary" href="downloads/'+v['filename']+'.docx" download>Download Word</a></div></section>'
+    page('resumes.html','Engineering Résumé','View Eric John Cruz’s general engineering résumé and download the PDF or Word document.',hub,'resumes')
+    body='<div class="actions no-print">'+links+'</div>'+resume_html(key,sections)
+    page('resume.html','Engineering Résumé',v['summary'],body,'resumes')
 
 def main():
     global BASE
     parser=argparse.ArgumentParser();parser.add_argument('--base-url',default='');args=parser.parse_args();BASE=args.base_url.rstrip('/')
     if BASE and not re.fullmatch(r'https://[A-Za-z0-9.-]+(?:/[A-Za-z0-9._~-]+)*',BASE):raise ValueError('Use an HTTPS base URL with no query or fragment.')
+    if OUT.exists():
+        if OUT.resolve().parent!=ROOT.resolve() or OUT.name!='dist':raise ValueError('Output directory must remain inside the repository.')
+        shutil.rmtree(OUT)
     for folder in ['assets','downloads','samples']:(OUT/folder).mkdir(parents=True,exist_ok=True)
     for file in (ROOT/'assets').iterdir():shutil.copyfile(file,OUT/'assets'/file.name)
     (OUT/'assets/favicon.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="32" fill="#122c35"/><text x="32" y="41" text-anchor="middle" font-family="Georgia,serif" font-size="29" fill="white">EC</text></svg>',encoding='utf-8')
     data={'takeoff':{'points':DEMO['points'],'route':DEMO['route']},'schedule-review':{'voltage_v':230,'loads':DEMO['loads']},'equipment-evaluation':DEMO['supply'],'document-control':DEMO['records']}
     for slug,value in data.items():(OUT/'samples'/(slug+'.json')).write_text(json.dumps({'classification':DEMO['classification'],'inputs':value},indent=2),encoding='utf-8')
     render_site();render_resumes()
-    page('404.html','Page Not Found','This page could not be found.',pagehead('Page not found','Let’s get you back to the work.','Use the navigation to find projects, experience or résumés.')+btn('Open the homepage','index.html'))
+    page('404.html','Page Not Found','This page could not be found.',pagehead('Page not found','Page not found','Use the navigation to find work samples, experience or the résumé.')+btn('Open the homepage','index.html'))
     (OUT/'.nojekyll').write_text('')
     if BASE:
         urls=[BASE+'/'+x.name for x in sorted(OUT.glob('*.html')) if x.name not in ['404.html'] and not x.name.startswith('sample-')]
@@ -360,6 +378,6 @@ def main():
         if (OUT/'sitemap.xml').exists():(OUT/'sitemap.xml').unlink()
     (ROOT/'qa').mkdir(exist_ok=True)
     (ROOT/'qa/build.json').write_text(json.dumps({'base_url':BASE,'pages':len(list(OUT.glob('*.html'))),'resume_variants':list(VARIANTS),'status':'Built locally; deployment verification separate'},indent=2))
-    print(f'Built {len(list(OUT.glob("*.html")))} pages, 3 DOCX resumes, 3 PDFs and 4 example datasets.')
+    print(f'Built {len(list(OUT.glob("*.html")))} pages, 1 DOCX résumé, 1 PDF and 4 example datasets.')
 
 if __name__=='__main__':main()
