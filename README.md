@@ -1,57 +1,56 @@
 # Eric John Cruz Engineering Portfolio
 
-Independent engineering career website and three targeted resumes. This project does not modify the digital marketing portfolio.
+Engineering career website with one general-purpose résumé in HTML, editable Word and searchable PDF.
 
-## Content
+## Public content
 
-- Engineering-led homepage, experience, estimating, technical sales, operations and contact pages.
-- Four fictional practice worksheets: quantity takeoff, connected-load review, equipment comparison and document-register checks. They are not past client work.
-- One account of estimating training, with its practice status stated explicitly.
-- Three resumes generated from `content/profile.json` in HTML, DOCX and searchable PDF.
-- Static HTML with shared Python templates, local CSS and progressive JavaScript. No third-party fonts, tracking or runtime dependencies.
+- Electrical drawings, estimating documentation, engineering records and technical support experience.
+- Professional experience and a preserved professional portrait.
+- Four fictional technical practice worksheets and one account of estimating training.
+- One public résumé: `Eric_John_Cruz_Engineering_Resume` in DOCX and PDF, with the same content as `resume.html`.
 
-## Build and check
+The professional credential is **Registered Electrical Engineer (Philippines)**. GroundPlan is described as training and practice. Technical sales content describes transferable skills and target opportunities without claiming previous sales-engineer employment.
 
-Requires Python 3.11 or newer. Install `requirements.txt` in a virtual environment.
+## Build
+
+Requires Python 3.11 or newer.
 
 ```text
+python -m pip install -r requirements.txt
 python scripts/build.py
 python scripts/check.py
 python -m http.server 8080 --directory dist
 ```
 
-Open `http://localhost:8080/`. Relative links also work under a repository-specific GitHub Pages path. Generated outputs live in `dist/`. The default build omits production canonical URLs and adds noindex until a confirmed deployment base URL is supplied.
+The build clears only the generated `dist/` directory before writing the site, so obsolete résumé pages and files do not survive repeated builds. The output directory is verified to remain inside the repository.
+
+For production, supply the actual Pages base URL:
 
 ```text
-python scripts/build.py --base-url https://YOUR-OWNER.github.io/YOUR-REPOSITORY
+python scripts/build.py --base-url https://engineericjohncruz.github.io/eric-john-cruz-engineering
 ```
 
-Use the actual GitHub Pages base URL, not an assumed address. The deployment workflow obtains it from `actions/configure-pages`.
+The default offline build uses noindex. The GitHub Actions workflow gets the actual Pages URL and generates the sitemap, canonical URLs and résumé portfolio link.
 
-## GitHub Pages
+## Maintenance
 
-Create the separate repository, push `main`, then enable **Settings > Pages > Build and deployment > GitHub Actions**. The included workflow builds the site, validates links and documents, performs Chromium responsive checks and axe accessibility checks, and deploys `dist/`. It tests the published pages and downloads after deployment.
+Common facts and tools are in `content/profile.json`. Public résumé sections and original practice inputs are in `scripts/build.py`. Update factual statements only when supported by evidence.
 
-The repository should contain only approved public content. Do not add source resumes, private evidence mappings, proprietary plans, training transcripts, standards tables or credentials.
+Job-specific application résumés belong outside this public repository. Earlier source history is retained; the current site does not generate or serve the old variants.
 
-## Resume maintenance
+Do not add source résumés, private evidence mappings, client or employer drawings, course materials, standards tables or credentials.
 
-Common career facts live in `content/profile.json`. Targeted summaries and emphasis are defined in `scripts/build.py`. Every format is generated from the same structured resume sections. Update both only when factual evidence supports the change.
+## Verification
 
-Local PDFs are generated from the same content as the DOCX. Word rendering is a separate QA check, not established by PDF generation. The CI job converts Word files with LibreOffice, verifies their text and page count, and uploads page renders for visual inspection.
-
-## Demonstrations
-
-All practice inputs, quantities and equipment options are fictional, and the exercises were prepared with AI assistance. The homepage now puts professional engineering responsibilities first. The examples show calculations and record-keeping methods; they do not represent client projects, certified designs or completed contracts. The estimating training account describes practice without reproducing course material or claiming trainer approval.
-
-## Visual checks
-
-`scripts/browser-check.cjs` accepts an HTTP base URL. Install `playwright` and `axe-core` for the full check; the local runtime can run layout checks with the bundled Playwright and an installed Chromium binary. Store QA results outside the deployed site.
+The workflow validates every generated page and link, checks demonstration arithmetic, compares Word and PDF content, renders Word pages with LibreOffice, and checks Chromium layouts and accessibility. It tests the deployed pages, both current downloads, preserved photo and 404 responses for all nine obsolete résumé URLs.
 
 ```text
 node scripts/browser-check.cjs http://localhost:8080/
+node scripts/photo-check.cjs http://localhost:8080/
 ```
 
-## Publication rights
+All practice exercise inputs are fictional and marked as AI-assisted. They are not issued engineering designs, completed contracts or procurement approvals. Original source and employer documents are excluded.
 
-Personal career content is provided for Eric John Cruz's employment portfolio. Third-party logos, client records and standards extracts are not included. Demonstration assets are original to this package. No third-party certification or design approval is implied.
+## Hosting
+
+This repository is separate from the digital marketing portfolio. GitHub Pages uses **Settings > Pages > GitHub Actions**. Pull requests run build checks; deployment occurs after a checked pull request is merged to main.

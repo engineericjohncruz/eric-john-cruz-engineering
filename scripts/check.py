@@ -10,6 +10,8 @@ import build
 from build import OUT,ROOT,DEMO,VARIANTS,resume_sections,record_ready
 
 build.BASE=json.loads((ROOT/'qa/build.json').read_text(encoding='utf-8'))['base_url']
+assert len(VARIANTS)==1,'Only one public resume configuration is allowed'
+assert build.PROFILE['credential']=='Registered Electrical Engineer (Philippines)'
 
 class Page(HTMLParser):
     def __init__(self):super().__init__();self.links=[];self.ids=set();self.h1=0;self.title=False;self.description=False;self.errors=[];self.lang=False
@@ -69,6 +71,17 @@ assert not record_ready(dict(DEMO['records'][0],attachment=False))
 assert not record_ready(dict(DEMO['records'][0],review='Pending'))
 assert not record_ready(dict(DEMO['records'][0],received='B'))
 
+expected_downloads={'Eric_John_Cruz_Engineering_Resume.pdf','Eric_John_Cruz_Engineering_Resume.docx'}
+assert {f.name for f in (OUT/'downloads').iterdir()}==expected_downloads,'Unexpected public resume files'
+for old in ['resume-engineering.html','resume-technical-sales.html','resume-operations.html']:
+    assert not (OUT/old).exists(),'Obsolete resume page remains'
+    for html in OUT.glob('*.html'):
+        assert old not in html.read_text(encoding='utf-8'),'Obsolete resume link remains'
+    if (OUT/'sitemap.xml').exists():assert old not in (OUT/'sitemap.xml').read_text()
+for html in OUT.glob('*.html'):
+    body=html.read_text(encoding='utf-8')
+    assert '<small>Electrical Engineering &amp; Technical Support</small>' in body
+    assert 'Choose a résumé' not in body and 'All résumé versions' not in body and '>Résumés<' not in body
 docs=[]
 def normalize(s):return ' '.join(s.replace('•',' ').split())
 for key,v in VARIANTS.items():
@@ -83,6 +96,14 @@ for key,v in VARIANTS.items():
     with ZipFile(word) as z:
         assert z.testzip() is None
         assert 'word/document.xml' in z.namelist()
+        assert not any(n.startswith('word/media/') for n in z.namelist()),'Resume must be photo-free'
+        relationships=z.read('word/_rels/document.xml.rels').decode()
+        for url in ['mailto:'+build.PROFILE['email'],build.PROFILE['linkedin']]+([build.BASE+'/'] if build.BASE else []):
+            assert url in relationships,'Missing Word contact link'
+    pdf_links=[str(a.get_object().get('/A',{}).get('/URI','')) for page in r.pages for a in page.get('/Annots',[])]
+    for url in ['mailto:'+build.PROFILE['email'],build.PROFILE['linkedin']]+([build.BASE+'/'] if build.BASE else []):
+        assert url in pdf_links,'Missing PDF contact link'
+    assert not wd.tables,'Resume must have no layout tables'
     docs.append({'variant':key,'pdf_pages':len(r.pages),'pdf_text_characters':len(text),'docx_paragraphs':len(wd.paragraphs)})
 report={'pages':len(pages),'local_links_checked':checked_links,'arithmetic':'passed','document_rules':'passed' if not errors else 'failed','documents':docs,'errors':errors}
 (ROOT/'qa/content-checks.json').write_text(json.dumps(report,indent=2))
