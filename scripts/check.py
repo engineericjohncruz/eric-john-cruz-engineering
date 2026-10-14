@@ -57,7 +57,8 @@ assert len({x['id'] for x in DEMO['points']})==25
 assert sum(x['type']=='lighting' for x in DEMO['points'])==12
 assert sum(x['type']=='outlets' for x in DEMO['points'])==13
 assert sum(DEMO['route']['segments_m'])==39
-assert math.isclose((39+6)*1.1,49.5)
+assert sum(DEMO['route']['segments_m']) + DEMO['route']['rise_and_termination_allowance_m'] == 45
+assert 'procurement_allowance_fraction' not in DEMO['route']
 assert sum(x['quantity']*x['unit_va'] for x in DEMO['loads'])==1794
 assert math.isclose(1794/230,7.8)
 target=sum(DEMO['supply']['load_a'])*(1+DEMO['supply']['reserve_fraction'])
