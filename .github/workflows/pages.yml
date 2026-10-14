@@ -29,7 +29,7 @@ jobs:
           npm install --no-save --package-lock=false playwright axe-core
           npx playwright install --with-deps chromium
           sudo apt-get update
-          sudo apt-get install -y libreoffice-writer poppler-utils
+          sudo apt-get install -y libreoffice-writer poppler-utils fonts-liberation
       - name: Build production package
         env:
           BASE_URL: ${{ steps.pages.outputs.base_url }}
@@ -84,10 +84,11 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
-      - name: Verify published portrait on desktop tablet and mobile
+      - name: Verify published pages and portrait on desktop tablet and mobile
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
-          npm install --no-save --package-lock=false playwright
+          npm install --no-save --package-lock=false playwright axe-core
           npx playwright install --with-deps chromium
           node scripts/photo-check.cjs "$PAGE_URL" --emit-previews
+          node scripts/browser-check.cjs "$PAGE_URL"

@@ -6,14 +6,14 @@ Engineering career website with one general-purpose résumé in HTML, editable W
 
 - Electrical drawings, estimating documentation, engineering records and technical support experience.
 - Professional experience and a preserved professional portrait.
-- Four fictional technical practice worksheets and one account of estimating training.
+- Four engineering work samples with explicit input assumptions and an account of ongoing Australian electrical estimating training.
 - One public résumé: `Eric_John_Cruz_Engineering_Resume` in DOCX and PDF, with the same content as `resume.html`.
 
 The professional credential is **Registered Electrical Engineer (Philippines)**. GroundPlan is described as training and practice. Technical sales content describes transferable skills and target opportunities without claiming previous sales-engineer employment.
 
 ## Build
 
-Requires Python 3.11 or newer.
+Requires Python 3.11 or newer and Liberation Sans fonts for embedded PDF text (`fonts-liberation` on Ubuntu). Set `RESUME_FONT_DIR` when the fonts are installed in a custom directory.
 
 ```text
 python -m pip install -r requirements.txt
@@ -34,7 +34,7 @@ The default offline build uses noindex. The GitHub Actions workflow gets the act
 
 ## Maintenance
 
-Common facts and tools are in `content/profile.json`. Public résumé sections and original practice inputs are in `scripts/build.py`. Update factual statements only when supported by evidence.
+Common facts and tools are in `content/profile.json`. Public résumé sections and illustrative sample inputs are in `scripts/build.py`. Update factual statements only when supported by evidence.
 
 Job-specific application résumés belong outside this public repository. Earlier source history is retained; the current site does not generate or serve the old variants.
 
@@ -49,7 +49,7 @@ node scripts/browser-check.cjs http://localhost:8080/
 node scripts/photo-check.cjs http://localhost:8080/
 ```
 
-All practice exercise inputs are fictional and marked as AI-assisted. They are not issued engineering designs, completed contracts or procurement approvals. Original source and employer documents are excluded.
+Samples are classified as an electrical estimating take-off, electrical load calculation, equipment evaluation and engineering document register. The work-samples page gives a concise AI-assistance disclosure. Each worksheet and JSON dataset retains its input basis and technical limits. Professional employment and ongoing training are presented separately. Original employer records and proprietary training materials are excluded.
 
 ## Hosting
 
