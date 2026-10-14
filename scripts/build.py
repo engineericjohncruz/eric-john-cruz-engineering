@@ -156,7 +156,7 @@ def render_site():
     home+='<section class="section"><div class="section-head"><h2>Résumés and contact</h2><p>Download an engineering-focused résumé or contact me about a relevant opening.</p></div><div class="actions">'+btn('View the résumé hub','resumes.html')+btn('Contact Eric','contact.html',True)+'</div></section>'
     page('index.html','Electrical Engineering and Documentation','Eric John Cruz, Philippine Registered Electrical Engineer. Building electrical drawings, schedules, engineering records and quantity takeoffs.',home)
 
-    exp=pagehead('Experience','Electrical drawings, plant records and reporting','I've worked on small-building electrical drawings and schedules, handled electrical and automation records in a power plant assignment, and assisted with municipal inspection documentation.')
+    exp=pagehead('Experience','Electrical drawings, plant records and reporting','I have worked on small-building electrical drawings and schedules, handled electrical and automation records in a power plant assignment, and assisted with municipal inspection documentation.')
     exp='<div class="experience-intro">'+exp+'<figure class="experience-portrait">'+portrait()+'<figcaption>Eric John Cruz, REE</figcaption></figure></div>'
     exp+='<section><h2>Engineering experience</h2><div class="timeline">'
     def job(e):return f'<article class="job"><div class="date">{esc(e["dates"])}<br>{esc(e["type"])}</div><div><h3>{esc(e["title"])}</h3><p class="company">{esc(e["company"])}</p>{ul(e["bullets"])}</div></article>'
