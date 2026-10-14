@@ -5,7 +5,7 @@ Independent engineering career website and three targeted resumes. This project 
 ## Content
 
 - Engineering-led homepage, experience, estimating, technical sales, operations and contact pages.
-- Four original demonstration case studies: quantity takeoff, load schedule review, equipment comparison and document control.
+- Four fictional practice worksheets: quantity takeoff, connected-load review, equipment comparison and document-register checks. They are not past client work.
 - One account of estimating training, with its practice status stated explicitly.
 - Three resumes generated from `content/profile.json` in HTML, DOCX and searchable PDF.
 - Static HTML with shared Python templates, local CSS and progressive JavaScript. No third-party fonts, tracking or runtime dependencies.
@@ -42,7 +42,7 @@ Local PDFs are generated from the same content as the DOCX. Word rendering is a 
 
 ## Demonstrations
 
-All demonstration inputs, quantities and equipment options are fictional and identified as such. They show documentation and analysis methods, not installation instructions, certified designs or completed client contracts. The estimating training account describes practice without reproducing course material or claiming trainer approval.
+All practice inputs, quantities and equipment options are fictional, and the exercises were prepared with AI assistance. The homepage now puts professional engineering responsibilities first. The examples show calculations and record-keeping methods; they do not represent client projects, certified designs or completed contracts. The estimating training account describes practice without reproducing course material or claiming trainer approval.
 
 ## Visual checks
 
